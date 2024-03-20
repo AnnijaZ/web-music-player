@@ -1,3 +1,6 @@
+/* App.css */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
 .App {
   text-align: center;
 }
@@ -36,3 +39,233 @@
     transform: rotate(360deg);
   }
 }
+
+/* App.css */
+body {
+  background: linear-gradient(to right, rgb(67, 28, 104), rgb(146, 52, 118));
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+  font-family: 'Arial', sans-serif; /* Optional: Set a default font-family */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Try adding this to hide overflow on the body and html */
+}
+
+
+/* .playlist {
+  border-radius: 1rem;
+  background-color: rgb(35, 15, 54);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.playlist {
+  max-height: 400px;
+  overflow-y: auto;
+} 
+
+.plistitem{
+  background-color: #1d1b1b;
+  color: white;
+} */
+
+.custom-navbar {
+  background: linear-gradient(to right, rgb(67, 28, 104), rgb(146, 52, 118));
+  color: white;
+}
+
+.custom-navbar .nav-link,
+.custom-navbar .navbar-brand {
+  color: white !important;
+}
+
+.music-icon {
+  margin-right: 0.5rem; /* Adjust margin as needed */
+  color: white; /* Set the color for the icon */
+}
+
+.notification-icon,
+.settings-icon {
+  margin-left: 1rem;
+}
+
+.playlist {
+  max-width: 400px; /* Set the maximum width for the playlist */
+  margin: 50px 0 0 100px; /* Remove the margin for centering */
+}
+
+.plistitem {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Add padding for better spacing */
+  margin-bottom: 15px; /* Add margin between items */
+  border: 1px solid #241036; /* Add a border for each item */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  background-color: #1d1b1b;
+  color: white;
+  cursor: pointer;
+}
+
+.plistitem:hover {
+  transform: translateY(-5px);
+}
+
+.mr-2{
+  margin-right: 10px;
+}
+
+.playlist-image {
+  width: 70px; /* Adjust the width of the image */
+  height: 70px; /* Adjust the height of the image */
+  object-fit: cover; /* Ensure the image covers the entire space */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  margin-right: 10px; /* Add margin between the image and text */
+}
+
+.add-playlist-button{
+  margin-left:6rem;
+  background-color: #1d1b1b;
+  border: 1px solid #241036;
+}
+
+.song-info {
+  flex: 1;
+}
+
+@keyframes slideIn {
+  from {
+    top: -100px;
+  }
+  to {
+    top: 50px; /* Adjust as needed */
+  }
+}
+
+@keyframes slideOut {
+  from {
+    top: 50px; /* Adjust as needed */
+  }
+  to {
+    top: -100px;
+  }
+}
+
+
+.play-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+.add-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+.home {
+  padding: 50px 0 0 100px; /* Use padding instead of margin */
+  box-sizing: border-box;
+}
+
+.album-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px; /* Reduce padding */
+  margin: 10px;
+  border: 1px solid #241036;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  max-width: 200px; /* Set a maximum width */
+  background-color: #1d1b1b;
+  color: white;
+  border-radius: 5px
+}
+
+.album-item:hover {
+  transform: translateY(-5px);
+}
+
+.album-cover {
+  width: 100%;
+  height: 200px; /* Set a fixed height */
+  overflow: hidden;
+  margin-bottom: 5px; /* Reduce margin */
+}
+
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px
+}
+
+.album-info {
+  text-align: center;
+}
+
+.album-title {
+  font-weight: bold;
+}
+
+
+
+/* :root {
+  --primary-color: #f0b2ca;
+  --secondary-color: #333;
+  --border-radius: 10px;
+}
+
+body {
+  background-color: ba;
+  color: var(--secondary-color);
+}
+
+.container-fluid {
+  border-radius: var(--border-radius);
+  background-color: white;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.player,
+
+
+
+/* Add this to style the MusicLibrary component */
+/* .music-library {
+  margin: 2rem 0;
+}
+
+.file-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.file-name {
+  font-weight: bold;
+}
+
+.file-metadata {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.file-actions {
+  display: flex;
+  justify-content: flex-end;
+} */
+
