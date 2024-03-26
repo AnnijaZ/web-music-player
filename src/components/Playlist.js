@@ -40,10 +40,11 @@
 // export default Playlist;
 
 import React, { useState, useEffect } from "react";
+import { Popconfirm } from 'antd';
 import { ListGroup, ListGroupItem, Button, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPlus  } from '@fortawesome/free-solid-svg-icons';
-import '../App.css';
+import { faPlay, faPlus, faMinus  } from '@fortawesome/free-solid-svg-icons';
+import '../App.css';  
 import PlaylistModal from './PlaylistModal';
 import Notification from "./Notification";
 
@@ -55,71 +56,99 @@ const Playlist = ({ handlePlayback }) => {
   const [notification, setNotification] = useState(null);
   const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [editPlaylistName, setEditPlaylistName] = useState('');
 
-  useEffect(() => {
-    // Fetch playlists from getPlaylists.php
+  const fetchPlaylists = () => {
+
     fetch('http://localhost/backend/getPlaylists.php')
       .then(response => response.json())
       .then(data => setPlaylists(data))
       .catch(error => console.error('Error fetching playlists:', error));
+  };
+
+  useEffect(() => {
+    fetchPlaylists()
   }, []);
 
-  // Function to fetch songs for the selected playlist
   const fetchPlaylistSongs = (playlistId) => {
-    // Fetch songs for the selected playlist from getPlaylistSongs.php
     fetch(`http://localhost/backend/getPlaylistSongs.php?playlistId=${playlistId}`)
       .then(response => response.json())
       .then(data => setPlaylistSongs(data))
       .catch(error => console.error('Error fetching playlist songs:', error));
   };
 
-  // Function to handle click on playlist
   const handlePlaylistClick = (playlistId) => {
     setSelectedPlaylist(playlistId);
     fetchPlaylistSongs(playlistId);
   };
 
-  // Function to handle play button click
   const handlePlayButtonClick = (song) => {
     handlePlayback(song);
   };
 
   const handleCloseModal = () => {
+    fetchPlaylists()
     setShowModal(false);
   };
 
-  // Function to display notification
   const displayNotification = (message) => {
     setNotification(message);
     setTimeout(() => {
       setNotification(null);
-    }, 5000); // Hide notification after 5 seconds
+    }, 5000);
   };
 
-  // Function to handle right-click on playlist
   const handleContextMenu = (event, playlistId) => {
-    event.preventDefault(); // Prevent default context menu
-    setContextMenuPosition({ x: event.clientX, y: event.clientY }); // Save mouse position
-    setSelectedPlaylist(playlistId); // Set the selected playlist
-    setShowContextMenu(true); // Show the context menu
+    event.preventDefault();
+    setContextMenuPosition({ x: event.clientX, y: event.clientY }); //saglabā peles pozīciju
+    setSelectedPlaylist(playlistId); 
+    setShowContextMenu(true); 
   };
 
-
-  // Function to close the context menu
   const handleCloseContextMenu = () => {
+    fetchPlaylists()
     setShowContextMenu(false);
   };
 
   const handleEditPlaylist = () => {
-    // Logic to handle editing playlist
-    handleCloseContextMenu();
+    const selectedPlaylistData = playlists.find(playlist => playlist.playlist_id === selectedPlaylist);
+
+  if (selectedPlaylistData) {
+    setEditPlaylistName(selectedPlaylistData.playlist_name);
+    
+    setShowModal(true);
+  }
+  
+  handleCloseContextMenu();
   };
 
   const handleDeletePlaylist = () => {
-    // Logic to handle deleting playlist
+    fetch(`http://localhost/backend/deletePlaylist.php?playlistId=${selectedPlaylist}`, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+      displayNotification(data.message)
+    })
+    .catch(error => console.error('Error:', error));
     handleCloseContextMenu();
+    fetchPlaylists()
   };
+  
+  const handleRemoveSongFromPlaylist = (songId) => {
+    console.log(songId)
 
+    fetch(`http://localhost/backend/removeSongFromPlaylist.php?songId=${songId}`, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+      displayNotification(data.message);
+      fetchPlaylistSongs(selectedPlaylist);
+    })
+    .catch(error => console.error('Error:', error));
+  };
+  
   return (
     <>
       <Button variant="primary" onClick={() => setShowModal(true)} className="add-playlist-button">
@@ -137,7 +166,7 @@ const Playlist = ({ handlePlayback }) => {
           </ListGroupItem>
         ))}
       </ListGroup>
-      <PlaylistModal show={showModal} handleClose={handleCloseModal}  displayNotification={displayNotification}/>
+      <PlaylistModal show={showModal} handleClose={handleCloseModal} displayNotification={displayNotification} editPlaylistName={editPlaylistName}  playlistId={selectedPlaylist}/>
       {selectedPlaylist && (
         <ListGroup className="playlist">
           {playlistSongs.map((song, index) => (
@@ -154,6 +183,16 @@ const Playlist = ({ handlePlayback }) => {
               <Button className="play-button" onClick={() => handlePlayButtonClick(song)}>
                 <FontAwesomeIcon icon={faPlay} />
               </Button>
+              <Popconfirm
+                title={`Are you sure you want to remove "${song.song_title}" from this playlist?`}
+                onConfirm={() => handleRemoveSongFromPlaylist(song.song_id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="minus-button">
+                  <FontAwesomeIcon icon={faMinus} />
+                </Button>
+              </Popconfirm>
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -164,10 +203,16 @@ const Playlist = ({ handlePlayback }) => {
         onClose={handleCloseContextMenu}
         onHide={handleCloseContextMenu}
       >
-
         <Dropdown.Menu>
           <Dropdown.Item onClick={handleEditPlaylist}>Edit</Dropdown.Item>
-          <Dropdown.Item onClick={handleDeletePlaylist}>Delete</Dropdown.Item>
+          <Popconfirm
+            title="Are you sure you want to delete this playlist?"
+            onConfirm={handleDeletePlaylist}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Dropdown.Item>Delete</Dropdown.Item>
+          </Popconfirm>
         </Dropdown.Menu>
       </Dropdown>
       {notification && <Notification message={notification} onClose={() => setNotification(null)} />} 

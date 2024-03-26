@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import Notification from './Notification';
+import '../App.css';
 
 const MusicUploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);

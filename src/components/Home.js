@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import the plus icon
+import Notification from "./Notification";
 import '../App.css';
 
 const Home = ({ handlePlayback }) => {
@@ -9,6 +10,8 @@ const Home = ({ handlePlayback }) => {
   const [showModal, setShowModal] = useState(false);
   const [playlists, setPlaylists] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null); // New state variable to store the current song ID
+  const [notification, setNotification] = useState(null);
+
 
   useEffect(() => {
     fetch('http://localhost/backend/getData.php')
@@ -16,6 +19,13 @@ const Home = ({ handlePlayback }) => {
       .then(data => setSongs(data))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  const displayNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
 
   // Function to fetch playlists from getPlaylists.php
   const fetchPlaylists = () => {
@@ -43,7 +53,7 @@ const Home = ({ handlePlayback }) => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                displayNotification(data.message)
                 // Close the modal after adding the song
                 setShowModal(false);
             })
@@ -96,6 +106,7 @@ const Home = ({ handlePlayback }) => {
           </ul>
         </Modal.Body>
       </Modal>  
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />} 
     </Container>
   );
 };

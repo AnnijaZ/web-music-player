@@ -163,6 +163,16 @@ html, body {
   margin-left: auto; /* Move the button to the right */
 }
 
+.minus-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+
 .add-button {
   background: none;
   border: none;
