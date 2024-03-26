@@ -16,6 +16,8 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(new Audio()); // Create a ref for the Audio object
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [songs, setSongs] = useState([]); // Add state for songs
+  const [filteredSongs, setFilteredSongs] = useState([]); // Add state for filtered songs
 
   useEffect(() => {
     const checkSession = async () => {
@@ -31,6 +33,34 @@ function App() {
 
     checkSession();
   }, []);
+
+
+  useEffect(() => {
+    const checkSession = async () => {
+      // Check session logic
+    };
+
+    checkSession();
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost/backend/getData.php')
+      .then(response => response.json())
+      .then(data => {
+        setSongs(data);
+        setFilteredSongs(data); // Initialize filteredSongs with all songs initially
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const handleSearch = (searchTerm) => {
+    // Filter songs based on search term
+    const filtered = songs.filter(song => 
+      song.song_title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredSongs(filtered); // Update filtered songs
+  };
 
   // Function to handle login
   const handleLogin = (isSet) => {
@@ -95,10 +125,10 @@ function App() {
 
   return (
     <div>
-      <Header handleLogout = {handleLogout}/>
+      <Header handleLogout = {handleLogout} handleSearch = {handleSearch}/>
       <Routes>
         <Route path="/playlist" element={<Playlist handlePlayback={handlePlayback} />} />
-        <Route path="/home" element={<Home handlePlayback={handlePlayback} />} />
+        <Route path="/home" element={<Home handlePlayback={handlePlayback} songs={filteredSongs.length > 0 ? filteredSongs : songs}/>} />
         <Route path="/upload" element={<MusicUploader />} />
       </Routes>
       <MusicBanner

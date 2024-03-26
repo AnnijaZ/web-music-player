@@ -5,20 +5,20 @@ import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import th
 import Notification from "./Notification";
 import '../App.css';
 
-const Home = ({ handlePlayback }) => {
-  const [songs, setSongs] = useState([]);
+const Home = ({ handlePlayback, songs }) => {
+  // const [songs, setSongs] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [playlists, setPlaylists] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null); // New state variable to store the current song ID
   const [notification, setNotification] = useState(null);
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetch('http://localhost/backend/getData.php')
       .then(response => response.json())
       .then(data => setSongs(data))
       .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  }, []);*/
 
   const displayNotification = (message) => {
     setNotification(message);

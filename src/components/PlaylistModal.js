@@ -53,6 +53,8 @@
 
     const handleCloseModal = () => {
       setPlaylistName('');
+      setCoverImage(null); // Reset coverImage state
+      setValidated(false); // Reset validated state
       handleClose();
     };
 

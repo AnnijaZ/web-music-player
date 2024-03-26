@@ -7,16 +7,10 @@ import { faMusic, faBell, faCog } from '@fortawesome/free-solid-svg-icons';
 import SearchBar from './SearchBar'; // Import the SearchBar component  
 import '../App.css';
 
-const Header = ({ handleLogout }) => {
+const Header = ({ handleLogout, handleSearch }) => {
   const logout = () => {
     // Call the handleLogout function passed from the parent component
     handleLogout();
-  };
-
-   // Function to handle search
-   const handleSearch = (searchTerm) => {
-    // Implement your search logic here
-    console.log('Search term:', searchTerm);
   };
 
   return (
