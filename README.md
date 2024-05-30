@@ -3,10 +3,11 @@
 Kvalifikācijas eksāmena projekts
 - [x] Izveidot pamatu projektam front-end
 - [x] Izveidot pamatu projektam back-end
-- [ ] Izveidot sadaļu Home
-- [ ] Izveidot sadaļu Favorites
-- [ ] Izveidot sadaļu Playlists
-- [ ] Izveidot sadaļu Settings
-- [ ] Izveidot sadaļu Upload
-- [ ] Izveidot sadaļu Recents
-- [ ] Izveidot sadaļu About
+- [x] Izveidot sadaļu Home
+- [x] Izveidot sadaļu Favorites
+- [x] Izveidot sadaļu Playlists
+- [x] Izveidot sadaļu Settings
+- [x] Izveidot sadaļu Upload
+- [x] Izveidot sadaļu Uploaded Songs
+- [x] Izveidot sadaļu Recents
+- [x] Izveidot sadaļu About
