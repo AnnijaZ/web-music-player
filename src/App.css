@@ -87,8 +87,7 @@ html, body {
   color: white; /* Set the color for the icon */
 }
 
-.notification-icon,
-.settings-icon {
+.notification-icon {
   margin-left: 1rem;
 }
 
@@ -279,3 +278,81 @@ body {
   justify-content: flex-end;
 } */
 
+.settings-icon {
+  color: white; /* Use the color of the parent element */
+  line-height: inherit; /* Use the line height of the parent element */
+  padding: 0; /* Remove any padding */
+  border: none; /* Remove any border */
+  margin-left: 1rem;
+  background-color: transparent; /* Remove any background color */
+}
+
+.dropdown {
+  margin: auto;
+}
+
+.drop-zone {
+  border: 2px dashed #1d1c1c;
+  padding: 50px;
+  text-align: center;
+  background: rgba(32, 28, 28, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin:100px 0px 20px 0px;
+  color:white;
+}
+
+.drop-zone.drag-over {
+  background-color: #e9ecef;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  color:white;
+}
+
+.upload-button:hover{
+  cursor: not-allowed;  
+}
+
+/* App.css - Add this CSS to manage cursor styles for disabled buttons */
+.button-disabled {
+  cursor: not-allowed !important; 
+  opacity: 0.65; /* Optional: reduce opacity to visually indicate it's disabled */
+}
+
+/* Specific to your upload button if you use a unique class name for it */
+.upload-btn:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+/* App.css or another relevant stylesheet */
+.album-item {
+  padding: 8px; /* Reduced padding */
+}
+
+.album-cover img {
+  width: 100%; /* Ensures image scales with the container */
+  height: auto; /* Maintains aspect ratio */
+  max-height: 200px; /* Reduces the maximum height of images */
+}
+
+.album-info {
+  font-size: 0.8rem; /* Smaller text */
+}
+
+.home {
+  padding-bottom: 50px; /* Adds padding at the bottom of the song list container */
+}
+
+.account-details{
+  text-align: center;
+}
+
+.account-buttons{
+  text-align: center;
+}

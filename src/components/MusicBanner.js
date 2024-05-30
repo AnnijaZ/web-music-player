@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faStepBackward, faStepForward, faStar, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faStepBackward, faStepForward, faStar as faStarFilled, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons'; // Import the empty star icon
 import "./Banner.css";
 
 const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, onFavoriteToggle, audioRef, handleSeek }) => {
@@ -10,22 +11,36 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   const [volume, setVolume] = useState(50); // Initial volume set to 50%
   const [showVolumeControl, setShowVolumeControl] = useState(false); // State to track visibility of volume control
 
+  // useEffect(() => {
+  //   const audio = audioRef.current;
+
+  //   const updateProgress = () => {
+  //     if (audio.duration && isPlaying) {
+  //       const percentage = (audio.currentTime / audio.duration) * 100;
+  //       setProgress(percentage);
+  //       setCurrentTime(formatTime(audio.currentTime));
+  //       setTotalDuration(formatTime(audio.duration));
+  //     }
+  //   };
+
   useEffect(() => {
     const audio = audioRef.current;
-
+  
     const updateProgress = () => {
-      if (audio.duration && isPlaying) {
+      if (currentSong && audio.duration && isPlaying) {
         const percentage = (audio.currentTime / audio.duration) * 100;
         setProgress(percentage);
         setCurrentTime(formatTime(audio.currentTime));
         setTotalDuration(formatTime(audio.duration));
       }
     };
-
+  
     const interval = setInterval(updateProgress, 1000); // Update every second
-
+  
     return () => clearInterval(interval); // Cleanup
-  }, [isPlaying]);
+  }, [isPlaying, currentSong]); // Add currentSong as a dependency
+  
+  
 
   // Format time function to convert seconds to mm:ss format
   const formatTime = (timeInSeconds) => {
@@ -70,8 +85,8 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         <button onClick={onNext}>
           <FontAwesomeIcon icon={faStepForward} />
         </button>
-        <button onClick={onFavoriteToggle}>
-          <FontAwesomeIcon icon={faStar} className='favorite' />
+        <button onClick={() => onFavoriteToggle(parseInt(currentSong.is_favorite) === 1)}>
+          <FontAwesomeIcon icon={currentSong ? parseInt(currentSong.is_favorite) === 1 ? faStarFilled : faStarEmpty : faStarEmpty} className='favorite' />
         </button>
       </div>
       <span>{currentTime}</span>

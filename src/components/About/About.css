@@ -1,0 +1,31 @@
+.about-container {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .about-title {
+    color: white;
+    font-size: 24px;
+  }
+  
+  .about-description {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-icon {
+    color: white;
+    font-size: 32px; /* Adjust the size as needed */
+    margin: 0 10px; /* Add some spacing between icons */
+  }
+  
+  .social-icon-link {
+    text-decoration: none;
+  }
+  
