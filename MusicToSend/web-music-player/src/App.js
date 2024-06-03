@@ -212,7 +212,6 @@ function App() {
       displayNotification("No song to play.");
       return;
     }
-    displayNotification("Playing song:", song);
     const audio = audioRef.current;
     audio.src = `http://localhost/backend/${song.file_path}`;
     audio.play();
