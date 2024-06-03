@@ -1,0 +1,416 @@
+/* App.css */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* App.css */
+body {
+  background: linear-gradient(to right, rgb(67, 28, 104), rgb(146, 52, 118));
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+  font-family: 'Arial', sans-serif; /* Optional: Set a default font-family */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Try adding this to hide overflow on the body and html */
+}
+
+
+/* .playlist {
+  border-radius: 1rem;
+  background-color: rgb(35, 15, 54);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.playlist {
+  max-height: 400px;
+  overflow-y: auto;
+} 
+
+.plistitem{
+  background-color: #1d1b1b;
+  color: white;
+} */
+
+.custom-navbar {
+  background: linear-gradient(to right, rgb(67, 28, 104), rgb(146, 52, 118));
+  color: white;
+}
+
+.custom-navbar .nav-link,
+.custom-navbar .navbar-brand {
+  color: white !important;
+}
+
+.music-icon {
+  margin-right: 0.5rem; /* Adjust margin as needed */
+  color: white; /* Set the color for the icon */
+}
+
+.notification-icon {
+  margin-left: 1rem;
+}
+
+.playlist {
+  max-width: 400px; /* Set the maximum width for the playlist */
+  margin: 50px 0 0 100px; /* Remove the margin for centering */
+}
+
+.plistitem {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Add padding for better spacing */
+  margin-bottom: 15px; /* Add margin between items */
+  border: 1px solid #241036; /* Add a border for each item */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  background-color: #1d1b1b;
+  color: white;
+  cursor: pointer;
+}
+
+.plistitem:hover {
+  transform: translateY(-5px);
+}
+
+.mr-2{
+  margin-right: 10px;
+}
+
+.playlist-image {
+  width: 70px; /* Adjust the width of the image */
+  height: 70px; /* Adjust the height of the image */
+  object-fit: cover; /* Ensure the image covers the entire space */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  margin-right: 10px; /* Add margin between the image and text */
+}
+
+.add-playlist-button{
+  margin-left:6rem;
+  background-color: #1d1b1b;
+  border: 1px solid #241036;
+}
+
+.song-info {
+  flex: 1;
+}
+
+@keyframes slideIn {
+  from {
+    top: -100px;
+  }
+  to {
+    top: 50px; /* Adjust as needed */
+  }
+}
+
+@keyframes slideOut {
+  from {
+    top: 50px; /* Adjust as needed */
+  }
+  to {
+    top: -100px;
+  }
+}
+
+
+.play-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+.minus-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+
+.add-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: auto; /* Move the button to the right */
+}
+
+.home {
+  padding: 20px;
+  min-height: 70vh; /* Adjust to ensure content doesn't overlap with the progress bar */
+}
+
+
+.album-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px; /* Reduce padding */
+  margin: 10px;
+  border: 1px solid #241036;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  max-width: 200px; /* Set a maximum width */
+  background-color: #1d1b1b;
+  color: white;
+  border-radius: 5px;
+  width: 300px;
+  height: 300px;
+}
+
+.album-item:hover {
+  transform: translateY(-5px);
+}
+
+.album-cover {
+  width: 100%;
+  height: auto; /* Set a fixed height */
+  overflow: hidden;
+  margin-bottom: 5px; /* Reduce margin */
+}
+
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px
+}
+
+.album-info {
+  text-align: center;
+}
+
+.album-title {
+  font-weight: bold;
+}
+
+.playlist-list {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+.playlist-list li {
+  margin-bottom: 10px; /* Space between list items */
+}
+
+.playlist-button {
+  display: block; /* Make button take the full width */
+  width: 100%; /* Full width button */
+  padding: 10px; /* Add padding */
+  background-color: #343a40; /* Darker background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  text-align: left; /* Align text to the left */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.playlist-button:hover {
+  background-color: #495057; /* Slightly lighter background on hover */
+}
+
+
+/* :root {
+  --primary-color: #f0b2ca;
+  --secondary-color: #333;
+  --border-radius: 10px;
+}
+
+body {
+  background-color: ba;
+  color: var(--secondary-color);
+}
+
+.container-fluid {
+  border-radius: var(--border-radius);
+  background-color: white;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.player,
+
+
+
+/* Add this to style the MusicLibrary component */
+/* .music-library {
+  margin: 2rem 0;
+}
+
+.file-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.file-name {
+  font-weight: bold;
+}
+
+.file-metadata {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.file-actions {
+  display: flex;
+  justify-content: flex-end;
+} */
+
+.settings-icon {
+  color: white; /* Use the color of the parent element */
+  line-height: inherit; /* Use the line height of the parent element */
+  padding: 0; /* Remove any padding */
+  border: none; /* Remove any border */
+  margin-left: 1rem;
+  background-color: transparent; /* Remove any background color */
+}
+
+.dropdown {
+  margin: auto;
+}
+
+.drop-zone {
+  border: 2px dashed #1d1c1c;
+  padding: 50px;
+  text-align: center;
+  background: rgba(32, 28, 28, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin:100px 0px 20px 0px;
+  color:white;
+}
+
+.drop-zone.drag-over {
+  background-color: #e9ecef;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  color:white;
+}
+
+.upload-button:hover{
+  cursor: not-allowed;  
+}
+
+/* App.css - Add this CSS to manage cursor styles for disabled buttons */
+.button-disabled {
+  cursor: not-allowed !important; 
+  opacity: 0.65; /* Optional: reduce opacity to visually indicate it's disabled */
+}
+
+/* Specific to your upload button if you use a unique class name for it */
+.upload-btn:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+/* App.css or another relevant stylesheet */
+.album-item {
+  padding: 8px; /* Reduced padding */
+}
+
+.album-cover img {
+  width: 100%; /* Ensures image scales with the container */
+  height: auto; /* Maintains aspect ratio */
+  max-height: 200px; /* Reduces the maximum height of images */
+}
+
+.album-info {
+  font-size: 0.8rem; /* Smaller text */
+}
+
+.account-details{
+  text-align: center;
+}
+
+.account-buttons{
+  text-align: center;
+}
+
+.playlist-home {
+  max-width: 400px; /* Set the maximum width for the playlist */
+  margin: 0 auto; /* Center the playlist */
+  margin-top: 50px;
+}
+
+.plistitem-home {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Add padding for better spacing */
+  margin-bottom: 15px; /* Add margin between items */
+  border: 1px solid #241036; /* Add a border for each item */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  background-color: #1d1b1b;
+  color: white;
+  cursor: pointer;
+}
+
+.plistitem-home:hover {
+  transform: translateY(-5px);
+}
+
+.mr-2{
+  margin-right: 10px;
+}
+
+.playlist-home-image {
+  width: 70px; /* Adjust the width of the image */
+  height: 70px; /* Adjust the height of the image */
+  object-fit: cover; /* Ensure the image covers the entire space */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  margin-right: 10px; /* Add margin between the image and text */
+}
