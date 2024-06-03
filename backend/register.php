@@ -15,6 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = mysqli_real_escape_string($conn, $data['username']);
         $password = $data['password'];
 
+        // Check if username already exists
+        $checkUserStmt = $conn->prepare("SELECT * FROM user_info WHERE user_name = ?");
+        $checkUserStmt->bind_param("s", $username);
+        $checkUserStmt->execute();
+        $result = $checkUserStmt->get_result();
+
+        if ($result->num_rows > 0) {
+            echo json_encode(['success' => false, 'message' => 'Username already exists.']);
+            exit;
+        }
+
         // Check password length and presence of an uppercase letter
         if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password)) {
             echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters long and include at least one uppercase letter.']);
