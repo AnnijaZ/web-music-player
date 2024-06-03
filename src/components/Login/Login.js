@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from "react-bootstrap";
+import Notification from '../Notification';
 import axios from 'axios';
 import './Login.css';
 
@@ -12,59 +13,91 @@ const LoginForm = ({ onLogin }) => {
     const [regUsername, setRegUsername] = useState('');
     const [regPassword, setRegPassword] = useState('');
     const [regPasswordRepeat, setRegPasswordRepeat] = useState('');
+    const [notification, setNotification] = useState(null);  // Add state for notification
+
+    const displayNotification = (message) => {
+      setNotification(message);
+      setTimeout(() => {
+          setNotification(null);
+      }, 5000);
+    };
 
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
-        
-        // Create an object to hold form data
-        const formData = {
-          username: username,
-          password: password
-        };
+      event.preventDefault(); // Prevent the default form submission behavior
+      
+      // Check if username or password fields are empty
+      if (!username || !password) {
+          displayNotification('Both username and password are required!');
+          return; // Stop the function if fields are empty
+      }
     
-        try {
-          // Make a POST request to Login.php using Axios
-          const response = await axios.post('http://localhost/backend/login.php', formData);
-          
-          console.log(response.data); // Log the response data
-          
-          if (response.status === 200) {
-            // Handle successful login
-            console.log('Login successful');
-            onLogin(true);
-          } else {
-            // Handle login failure
-            console.error('Login failed:', response.data.message); // Output the error message
+      // Create form data object
+      const formData = new URLSearchParams();
+      formData.append('username', username);
+      formData.append('password', password);
+    
+      try {
+        // Make a POST request to Login.php using Axios
+        const response = await axios.post('http://localhost/backend/login.php', formData, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
           }
-        } catch (error) {
-          console.error('Error:', error);
+        });
+        
+        if (response.data.success) {
+          displayNotification(response.data.message);
+          onLogin(true);
+        } else {
+          displayNotification(response.data.message);
         }
+      } catch (error) {
+        displayNotification('Login failed. Please try again.');
+      }
+    };
+
+    const resetRegisterForm = () => {
+      setRegUsername('');
+      setRegPassword('');
+      setRegPasswordRepeat('');
     };
 
     const handleRegister = async (e) => {
-        e.preventDefault();
-        if (regPassword !== regPasswordRepeat) {
-            alert('Passwords do not match!');
-            return;
-        }
-
-        const registerData = {
-            username: regUsername,
-            password: regPassword
-        };
-
-        try {
-            const response = await axios.post('http://localhost/backend/register.php', registerData);
-            if (response.data.success) {
-                console.log('Registration successful');
-                setShowRegister(false);
-            } else {
-                console.error('Registration failed:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+      e.preventDefault();
+      if (regPassword !== regPasswordRepeat) {
+          displayNotification('Passwords do not match!');
+          return;
+      }
+  
+      // Validate password length and uppercase letter
+      if (!isValidPassword(regPassword)) {
+          displayNotification('Password must be at least 8 characters long and include at least one uppercase letter.');
+          return;
+      }
+  
+      const registerData = {
+          username: regUsername,
+          password: regPassword
+      };  
+  
+      try {
+          const response = await axios.post('http://localhost/backend/register.php', registerData);
+          if (response.data.success) {
+              displayNotification('Registration successful');
+              resetRegisterForm();
+              setShowRegister(false);
+          } else {
+            displayNotification(response.data.message);
+          }
+      } catch (error) {
+          displayNotification('Error:', error);
+      }
+  };
+  
+  // Function to validate password
+  function isValidPassword(password) {
+      return password.length >= 8 && /[A-Z]/.test(password);
+  }
+  
 
     return (
       <div className="login-container">
@@ -95,7 +128,10 @@ const LoginForm = ({ onLogin }) => {
           <Button variant="secondary" onClick={() => setShowRegister(true)} className="btn">Register</Button>
         </form>
 
-        <Modal show={showRegister} onHide={() => setShowRegister(false)}>
+        <Modal show={showRegister} onHide={() => {
+                resetRegisterForm();
+                setShowRegister(false);
+            }}>
             <Modal.Header closeButton>
                 <Modal.Title>Register</Modal.Title>
             </Modal.Header>
@@ -134,6 +170,7 @@ const LoginForm = ({ onLogin }) => {
                 </Form>
             </Modal.Body>
         </Modal>
+        {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
       </div>
     );
 }

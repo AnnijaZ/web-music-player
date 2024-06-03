@@ -11,18 +11,6 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   const [volume, setVolume] = useState(50); // Initial volume set to 50%
   const [showVolumeControl, setShowVolumeControl] = useState(false); // State to track visibility of volume control
 
-  // useEffect(() => {
-  //   const audio = audioRef.current;
-
-  //   const updateProgress = () => {
-  //     if (audio.duration && isPlaying) {
-  //       const percentage = (audio.currentTime / audio.duration) * 100;
-  //       setProgress(percentage);
-  //       setCurrentTime(formatTime(audio.currentTime));
-  //       setTotalDuration(formatTime(audio.duration));
-  //     }
-  //   };
-
   useEffect(() => {
     const audio = audioRef.current;
   
@@ -39,8 +27,6 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   
     return () => clearInterval(interval); // Cleanup
   }, [isPlaying, currentSong]); // Add currentSong as a dependency
-  
-  
 
   // Format time function to convert seconds to mm:ss format
   const formatTime = (timeInSeconds) => {
@@ -62,11 +48,6 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     setShowVolumeControl(!showVolumeControl);
   };
 
-  // Function to handle skipping to the start of the song
-  const handleSkipToStart = () => {
-    audioRef.current.currentTime = 0;
-  };
-
   return (
     <div className="music-banner">
       {currentSong && (
@@ -76,7 +57,7 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         </div>
       )}
       <div className="controls">
-        <button onClick={handleSkipToStart}>
+        <button onClick={onPrevious}>
           <FontAwesomeIcon icon={faStepBackward} />
         </button>
         <button onClick={onPlayPause}>

@@ -182,9 +182,10 @@ html, body {
 }
 
 .home {
-  padding: 50px 0 0 100px; /* Use padding instead of margin */
-  box-sizing: border-box;
+  padding: 20px;
+  min-height: 70vh; /* Adjust to ensure content doesn't overlap with the progress bar */
 }
+
 
 .album-item {
   display: flex;
@@ -199,7 +200,9 @@ html, body {
   max-width: 200px; /* Set a maximum width */
   background-color: #1d1b1b;
   color: white;
-  border-radius: 5px
+  border-radius: 5px;
+  width: 300px;
+  height: 300px;
 }
 
 .album-item:hover {
@@ -208,7 +211,7 @@ html, body {
 
 .album-cover {
   width: 100%;
-  height: 200px; /* Set a fixed height */
+  height: auto; /* Set a fixed height */
   overflow: hidden;
   margin-bottom: 5px; /* Reduce margin */
 }
@@ -228,6 +231,31 @@ html, body {
   font-weight: bold;
 }
 
+.playlist-list {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+.playlist-list li {
+  margin-bottom: 10px; /* Space between list items */
+}
+
+.playlist-button {
+  display: block; /* Make button take the full width */
+  width: 100%; /* Full width button */
+  padding: 10px; /* Add padding */
+  background-color: #343a40; /* Darker background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  text-align: left; /* Align text to the left */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.playlist-button:hover {
+  background-color: #495057; /* Slightly lighter background on hover */
+}
 
 
 /* :root {
@@ -345,14 +373,44 @@ body {
   font-size: 0.8rem; /* Smaller text */
 }
 
-.home {
-  padding-bottom: 50px; /* Adds padding at the bottom of the song list container */
-}
-
 .account-details{
   text-align: center;
 }
 
 .account-buttons{
   text-align: center;
+}
+
+.playlist-home {
+  max-width: 400px; /* Set the maximum width for the playlist */
+  margin: 0 auto; /* Center the playlist */
+  margin-top: 50px;
+}
+
+.plistitem-home {
+  display: flex;
+  align-items: center;
+  padding: 10px; /* Add padding for better spacing */
+  margin-bottom: 15px; /* Add margin between items */
+  border: 1px solid #241036; /* Add a border for each item */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  background-color: #1d1b1b;
+  color: white;
+  cursor: pointer;
+}
+
+.plistitem-home:hover {
+  transform: translateY(-5px);
+}
+
+.mr-2{
+  margin-right: 10px;
+}
+
+.playlist-home-image {
+  width: 70px; /* Adjust the width of the image */
+  height: 70px; /* Adjust the height of the image */
+  object-fit: cover; /* Ensure the image covers the entire space */
+  border-radius: 5px; /* Add border radius for a rounded effect */
+  margin-right: 10px; /* Add margin between the image and text */
 }

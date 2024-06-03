@@ -62,52 +62,9 @@ const Header = ({ handleLogout, handleSearch }) => {
           </Nav>
         </Navbar.Collapse>
       </Container>
-      <Account show={showAccountModal} handleClose={() => setShowAccountModal(false)} />
+      <Account show={showAccountModal} handleClose={() => setShowAccountModal(false)} handleLogout={handleLogout}/>
     </Navbar>
   );
 };
 
 export default Header;
-
-// const Header = ({ handleLogout, handleSearch }) => {
-//   const logout = () => {
-//     // Call the handleLogout function passed from the parent component
-//     handleLogout();
-//   };
-
-//   return (
-//     <Navbar className="custom-navbar" expand="lg">
-//       <Container>
-//         <Navbar.Brand>
-//           <FontAwesomeIcon icon={faMusic} className="music-icon" />
-//           Music Player
-//         </Navbar.Brand>
-//         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//         <Navbar.Collapse id="basic-navbar-nav">
-//           <Nav className="me-auto">
-//             <Nav.Link as={Link} to="/home">Home</Nav.Link>
-//             <Nav.Link as={Link} to="/playlist">
-//               Playlist
-//             </Nav.Link>
-//             <Nav.Link as={Link} to="/upload">Upload</Nav.Link>
-//             <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
-//             <Nav.Link as={Link} to="/recents">Recents</Nav.Link>
-//             <Nav.Link as={Link} to="/about">About</Nav.Link>
-//             <Nav.Link  onClick={logout}>Logout</Nav.Link>
-//           </Nav>
-//           <SearchBar handleSearch={handleSearch} />
-//           <Nav className="ms-auto">
-//             <Nav.Link href="#">
-//               <FontAwesomeIcon icon={faBell} className="notification-icon" />
-//             </Nav.Link>
-//             <Nav.Link href="/settings">
-//               <FontAwesomeIcon icon={faCog} className="settings-icon" />
-//             </Nav.Link>
-//           </Nav>
-//         </Navbar.Collapse>
-//       </Container>
-//     </Navbar>
-//   );
-// };
-
-// export default Header;

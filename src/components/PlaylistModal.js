@@ -38,10 +38,10 @@
         fetch(`http://localhost/backend/${endpoint}`, {
           method: 'POST',
           body: formData,
+          credentials: 'include'  // Ensures cookies are included
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           handleClose();
           displayNotification(data.message);
         })

@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
-import Pagination from './components/Pagination';
+import { Pagination } from 'antd'; // Import antd pagination
 import '../../App.css';
 
 const UploadedSongs = ({ songs, handlePlayback, setCurrentSongId, fetchPlaylists, setShowModal }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [songsPerPage] = useState(10);
+  const songsPerPage = 16; // Songs per page
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const indexOfLastSong = currentPage * songsPerPage;
   const indexOfFirstSong = indexOfLastSong - songsPerPage;
   const currentSongs = songs.slice(indexOfFirstSong, indexOfLastSong);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const playSong = (song) => {
     handlePlayback(song);
@@ -25,7 +27,7 @@ const UploadedSongs = ({ songs, handlePlayback, setCurrentSongId, fetchPlaylists
       <Container fluid className="home">
         <Row>
           {currentSongs.map((song) => (
-            <Col key={song.song_id} xs={12} sm={6} md={4} lg={2} className="album-item">
+            <Col key={song.song_id} xs={12} sm={6} md={4} lg={3} className="album-item">
               <div className="album-cover">
                 <img src={song.cover_path ? `http://localhost/backend/${song.cover_path}` : 'http://localhost/backend/covers/noImage.jpg'} alt={`${song.song_title} Cover`} />
               </div>
@@ -46,7 +48,13 @@ const UploadedSongs = ({ songs, handlePlayback, setCurrentSongId, fetchPlaylists
             </Col>
           ))}
         </Row>
-        <Pagination songsPerPage={songsPerPage} totalSongs={songs.length} paginate={paginate} />
+        <Pagination
+          current={currentPage}
+          pageSize={songsPerPage}
+          total={songs.length}
+          onChange={handlePageChange}
+          style={{ textAlign: 'center', marginTop: '20px' }}
+        />
       </Container>
     </div>
   );

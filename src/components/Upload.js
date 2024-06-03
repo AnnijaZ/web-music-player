@@ -45,7 +45,8 @@ const MusicUploader = () => {
 
     fetch('http://localhost/backend/uploadMusic.php', {
       method: 'POST',
-      body: formData
+      body: formData,
+      credentials: 'include'  // Ensure cookies are included with the request
     })
     .then(response => response.json())
     .then(data => {
