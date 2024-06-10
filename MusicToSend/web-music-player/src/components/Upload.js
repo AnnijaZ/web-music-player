@@ -10,6 +10,9 @@ const MusicUploader = () => {
   const [notification, setNotification] = useState(null);
   const [dragOver, setDragOver] = useState(false);
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  const ALLOWED_FILE_TYPES = ['audio/mpeg', 'audio/mp3'];
+
   const handleDragOver = (e) => {
     e.preventDefault();  // Prevent default behavior (Prevent file from being opened)
     setDragOver(true);
@@ -24,14 +27,32 @@ const MusicUploader = () => {
     e.preventDefault();
     setDragOver(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
+      const file = e.dataTransfer.files[0];
+      if (validateFile(file)) {
+        setSelectedFile(file);
+      }
     }
   };
 
   const handleFileChange = (event) => {
     if (event.target.files[0]) {
-      setSelectedFile(event.target.files[0]);
+      const file = event.target.files[0];
+      if (validateFile(file)) {
+        setSelectedFile(file);
+      }
     }
+  };
+
+  const validateFile = (file) => {
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      setNotification("Invalid file type. Only MP3 files are allowed.");
+      return false;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setNotification("File size exceeds the limit of 10 MB.");
+      return false;
+    }
+    return true;
   };
 
   const handleUpload = () => {

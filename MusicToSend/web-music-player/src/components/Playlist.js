@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Popconfirm } from 'antd';
 import { ListGroup, ListGroupItem, Button, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +8,7 @@ import PlaylistModal from './PlaylistModal';
 import Notification from "./Notification";
 import PlaylistSongs from "./PlaylistSongs";
 
-const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs }) => {
-  const [playlists, setPlaylists] = useState([]);
+const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs, playlists, fetchPlaylists, userId }) => {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState(null);
@@ -18,24 +17,6 @@ const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs }) => {
   const [editPlaylistName, setEditPlaylistName] = useState('');
   const [playlistSelected, setPlaylistSelected] = useState(false);
   const contextMenuRef = useRef(null);
-
-  const fetchPlaylists = () => {
-    fetch('http://localhost/backend/getPlaylists.php', {
-      credentials: 'include'  // Ensures cookies are included
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setPlaylists(data);
-        } else {
-          setPlaylists([]); // Ensure data is always an array
-        }
-      })
-      .catch(error => {
-        displayNotification('Error fetching playlists:', error);
-        setNotification("Failed to fetch playlists");
-      });
-  };
 
   useEffect(() => {
     fetchPlaylists();
@@ -60,64 +41,68 @@ const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs }) => {
   };
 
   const displayNotification = (message) => {
-    setNotification(message);
+    setNotification(message); // Iestata paziņojuma ziņojumu
     setTimeout(() => {
-      setNotification(null);
+      setNotification(null); // Pēc 5 sekundēm paziņojumu noņem
     }, 5000);
-  };
+};
 
-  const handleContextMenu = (event, playlistId) => {
-    event.preventDefault();
-    setContextMenuPosition({ x: event.clientX, y: event.clientY });
-    setSelectedPlaylist(playlistId);
-    setPlaylistSelected(false);
-    setShowContextMenu(true); 
-  };
+const handleContextMenu = (event, playlistId) => {
+    event.preventDefault(); // Novērš noklusējuma darbību (konteksta izvēlne)
+    setContextMenuPosition({ x: event.clientX, y: event.clientY }); // Iestata konteksta izvēlnes pozīciju
+    setSelectedPlaylist(playlistId); // Iestata izvēlēto atskaņošanas sarakstu
+    setPlaylistSelected(false); // Atceļ izvēli atskaņošanas sarakstam
+    setShowContextMenu(true); // Rāda konteksta izvēlni
+};
 
-  const handleCloseContextMenu = () => {
-    fetchPlaylists();
-    setShowContextMenu(false);
-  };
+const handleCloseContextMenu = () => {
+    fetchPlaylists(); // Atjauno atskaņošanas sarakstu datus
+    setShowContextMenu(false); // Aizver konteksta izvēlni
+};
 
-  const handleEditPlaylist = () => {
-    const selectedPlaylistData = playlists.find(playlist => playlist.playlist_id === selectedPlaylist);
+const handleEditPlaylist = () => {
+    const selectedPlaylistData = playlists.find(playlist => playlist.playlist_id === selectedPlaylist); // Atrod izvēlēto atskaņošanas sarakstu
 
     if (selectedPlaylistData) {
-      setEditPlaylistName(selectedPlaylistData.playlist_name);
-      setShowContextMenu(false); // Close the context menu
-      setShowModal(true); // Open the PlaylistModal
+      setEditPlaylistName(selectedPlaylistData.playlist_name); // Iestata rediģējamo atskaņošanas saraksta nosaukumu
+      setShowContextMenu(false); // Aizver konteksta izvēlni
+      setShowModal(true); // Rāda atskaņošanas saraksta modālo logu
     }
   
-    handleCloseContextMenu();
-  };
+    handleCloseContextMenu(); // Aizver konteksta izvēlni
+};
 
-  const handleDeletePlaylist = () => {
+const handleDeletePlaylist = () => {
     fetch('http://localhost/backend/deletePlaylist.php', {
+      method: 'DELETE', // Norāda dzēšanas metodi
+      headers: {
+        'Content-Type': 'application/json', // Norāda saturu kā JSON
+      },
+      body: JSON.stringify({ playlistId: selectedPlaylist }), // Nosūta atskaņošanas saraksta ID
+      credentials: 'include'  // Iekļauj sīkdatnes pieprasījumā
+    })
+    .then(response => response.json())
+    .then(data => {
+      displayNotification(data.message); // Rāda paziņojumu ar atbildes ziņojumu
+      fetchPlaylists(); // Atjauno atskaņošanas sarakstu datus
+    })
+    .catch(error => displayNotification('Error:', error)); // Rāda kļūdas paziņojumu
+    handleCloseContextMenu(); // Aizver konteksta izvēlni
+};
+
+  const handleRemoveSongFromPlaylist = (songId, playlistId, userId) => {
+    fetch('http://localhost/backend/removeSongFromPlaylist.php', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ playlistId: selectedPlaylist }),
-      credentials: 'include'  // Ensure cookies are included with the request
+      body: JSON.stringify({ songId, playlistId, userId }),
+      credentials: 'include'
     })
     .then(response => response.json())
     .then(data => {
       displayNotification(data.message);
-      fetchPlaylists();
-    })
-    .catch(error => displayNotification('Error:', error));
-    handleCloseContextMenu();
-  };
-
-  const handleRemoveSongFromPlaylist = (songId) => {
-    fetch(`http://localhost/backend/removeSongFromPlaylist.php?songId=${songId}`, {
-      method: 'DELETE',
-      credentials: 'include'  // Ensure cookies are included with the request
-    })
-    .then(response => response.json())
-    .then(data => {
-      displayNotification(data.message);
-      fetchPlaylistSongs(selectedPlaylist);
+      fetchPlaylistSongs(playlistId); // Ensure we pass the playlistId here as well
     })
     .catch(error => displayNotification('Error:', error));
   };
@@ -160,6 +145,7 @@ const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs }) => {
           handlePlayButtonClick={handlePlayButtonClick}
           handleBackButtonClick={handleBackButtonClick}
           handleRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+          userId={userId}
         />
       )}
       {showContextMenu && (
@@ -187,4 +173,3 @@ const Playlist = ({ handlePlayback, fetchPlaylistSongs, playlistSongs }) => {
 };
 
 export default Playlist;
-

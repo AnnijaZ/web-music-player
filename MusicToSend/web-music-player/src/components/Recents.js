@@ -5,14 +5,9 @@ import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from 'antd';
 import '../App.css';
 
-const Recents = ({ fetchPlaylists, recentSongs, setShowModal, handlePlayback, setCurrentSongId }) => {
+const Recents = ({ recentSongs, setShowModal, handlePlayback, setCurrentSongId, playlists }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const songsPerPage = 5; // Set the number of songs per page
-
-  useEffect(() => {
-    fetchPlaylists();
-    // Add any other necessary fetches
-  }, []);
+  const songsPerPage = 5; 
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -46,7 +41,6 @@ const Recents = ({ fetchPlaylists, recentSongs, setShowModal, handlePlayback, se
                 </Button>
                 <Button className="add-button" onClick={() => {
                   setCurrentSongId(song.song_id);
-                  fetchPlaylists();
                   setShowModal(true);
                 }}>
                   <FontAwesomeIcon icon={faPlus} />

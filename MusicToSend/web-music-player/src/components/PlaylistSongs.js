@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faArrowLeft, faMinus } from '@fortawesome/free-solid-svg-icons';
 import "../App.css"
 
-const PlaylistSongs = ({ selectedPlaylist, playlistSongs, handlePlayButtonClick, handleBackButtonClick, handleRemoveSongFromPlaylist }) => {
+const PlaylistSongs = ({ selectedPlaylist, playlistSongs, handlePlayButtonClick, handleBackButtonClick, handleRemoveSongFromPlaylist, userId }) => {
   return (
     <>
       <Button variant="primary" onClick={handleBackButtonClick} className="add-playlist-button">
@@ -29,7 +29,7 @@ const PlaylistSongs = ({ selectedPlaylist, playlistSongs, handlePlayButtonClick,
               </Button>
               <Popconfirm
                   title={`Are you sure you want to remove "${song.song_title}" from this playlist?`}
-                  onConfirm={() => handleRemoveSongFromPlaylist(song.song_id)}
+                  onConfirm={() => handleRemoveSongFromPlaylist(song.song_id, selectedPlaylist, userId)}
                   okText="Yes"
                   cancelText="No"
                 >
@@ -50,4 +50,3 @@ const PlaylistSongs = ({ selectedPlaylist, playlistSongs, handlePlayButtonClick,
 };
 
 export default PlaylistSongs;
-

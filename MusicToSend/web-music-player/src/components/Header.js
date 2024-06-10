@@ -41,12 +41,13 @@ const Header = ({ handleLogout, handleSearch }) => {
             <Nav.Link as={Link} to="/uploaded-songs">Uploaded Songs</Nav.Link>
             <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
             <Nav.Link as={Link} to="/recents">Recents</Nav.Link>
+            <Nav.Link as={Link} to="/shared-songs">Shared songs</Nav.Link>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             <Nav.Link onClick={logout}>Logout</Nav.Link>
           </Nav>
           <SearchBar handleSearch={handleSearch} />
           <Nav className="ms-auto">
-            <Nav.Link href="#">
+            <Nav.Link href="/notifications">
               <FontAwesomeIcon icon={faBell} className="notification-icon" />
             </Nav.Link>
             <Dropdown show={showSettingsDropdown} onToggle={toggleDropdown}>

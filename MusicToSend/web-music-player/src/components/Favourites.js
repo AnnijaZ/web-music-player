@@ -10,7 +10,6 @@ const Favourites = ({ addToPlaylist, handlePlayback, setCurrentSongId, fetchPlay
   const songsPerPage = 8; // Set the number of songs per page
 
   useEffect(() => {
-    fetchPlaylists();
     fetchFavoriteSongs();
   }, []);
 

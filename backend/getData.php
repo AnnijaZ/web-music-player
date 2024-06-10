@@ -1,15 +1,15 @@
 <?php
-session_start(); // Sessijas uzsākšana, lai piekļūtu sesijas mainīgajiem
+session_start(); // Start the session to access session variables
 
-header("Access-Control-Allow-Origin: http://localhost:3000"); 
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
 
-include 'connectDB.php'; // Datubāzes savienojums
+include 'connectDB.php'; // Include the database connection
 
-// Pārbauda vai ir ielogojies lietotājs
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(array("error" => "User not logged in"));
     exit;
@@ -19,14 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = $_SESSION['user_id'];
 
     $sql = "SELECT info_id AS song_id, 
-    info_name AS song_title, 
-    info_artist AS artist, 
-    info_length AS duration, 
-    file_path AS file_path, 
-    cover_path AS cover_path,
-    is_favorite
-    FROM music_info
-    WHERE id_user = ?";
+                   info_name AS song_title, 
+                   info_artist AS artist, 
+                   info_length AS duration, 
+                   file_path AS file_path, 
+                   cover_path AS cover_path
+            FROM music_info
+            WHERE id_user = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $userId);

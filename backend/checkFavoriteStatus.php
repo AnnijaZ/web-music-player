@@ -15,22 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_SESSION['user_id']) && isset($data['songId'])) {
         $user_id = $_SESSION['user_id'];
         $song_id = $data['songId'];
-        $isFavorite = $data['isFavorite'];
 
-        if ($isFavorite) {
-            $query = "DELETE FROM favorites WHERE user_id = ? AND song_id = ?";
-        } else {
-            $query = "INSERT INTO favorites (user_id, song_id) VALUES (?, ?)";
-        }
-
+        $query = "SELECT * FROM favorites WHERE user_id = ? AND song_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ii", $user_id, $song_id);
         $stmt->execute();
+        $result = $stmt->get_result();
 
-        if ($stmt->affected_rows > 0) {
-            echo json_encode(['message' => $isFavorite ? 'Removed from favorites' : 'Added to favorites']);
+        if ($result->num_rows > 0) {
+            echo json_encode(['isFavorite' => true]);
         } else {
-            echo json_encode(['message' => 'Failed to update favorites']);
+            echo json_encode(['isFavorite' => false]);
         }
     } else {
         echo json_encode(['message' => 'Invalid data provided']);

@@ -1,64 +1,50 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Specify the exact origin
-header("Access-Control-Allow-Credentials: true"); // Allow credentials
-header("Access-Control-Allow-Methods: GET"); // Allow only GET method
-header("Access-Control-Allow-Headers: Content-Type"); // Allow only Content-Type header
-header('Content-Type: application/json'); // Set the content type to JSON
+header("Access-Control-Allow-Origin: http://localhost:3000"); // Atļauj piekļuvi no konkrētas izcelsmes
+header("Access-Control-Allow-Credentials: true"); // Atļauj izmantot sīkdatnes
+header("Access-Control-Allow-Methods: GET"); // Atļauj GET metodi
+header("Access-Control-Allow-Headers: Content-Type"); // Atļauj Content-Type galveni
+header('Content-Type: application/json'); // Norāda, ka atbildes veids ir JSON
 
-include 'connectDB.php'; // Include your database connection file
-session_start(); // Start the session
+include 'connectDB.php'; // Iekļauj datubāzes savienojuma failu
+session_start(); // Uzsāk sesiju
 
-// Check if user is logged in
+// Pārbauda, vai lietotājs ir ielogojies
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(array("error" => "User not logged in"));
-    exit; // Exit if not logged in
+    echo json_encode(array("error" => "User not logged in")); // Atgriež kļūdas ziņojumu, ja lietotājs nav ielogojies
+    exit; // Pārtrauc skripta izpildi
 }
 
-$user_id = $_SESSION['user_id']; // Get user ID from session
+$user_id = $_SESSION['user_id']; // Iegūst lietotāja ID no sesijas
 
-// Check if it's a GET request
+// Pārbauda, vai pieprasījums ir GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['playlistId'])) {
-        $playlistId = mysqli_real_escape_string($conn, $_GET['playlistId']);
+    if (isset($_GET['playlistId'])) { // Pārbauda, vai ir norādīts playlistId
+        $playlistId = mysqli_real_escape_string($conn, $_GET['playlistId']); // Attīra playlistId
 
-        // SQL query to select songs from the specified playlist and belonging to the logged-in user
-        $sql = "SELECT music_info.info_id AS song_id, 
-                        music_info.info_name AS song_title, 
-                        music_info.info_artist AS artist, 
-                        music_info.info_length AS duration, 
-                        music_info.file_path AS file_path, 
-                        music_info.cover_path AS cover_path 
-                FROM music_info
-                WHERE music_info.id_playlist = ? AND music_info.id_user = ?";
-                
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            error_log("Prepare failed: (" . $conn->errno . ") " . $conn->error);
-            echo json_encode(array("error" => "Database error"));
-            exit;
+        // SQL vaicājums, lai iegūtu dziesmas no konkrētā atskaņošanas saraksta
+        $sql = "SELECT mi.info_id AS song_id, mi.info_name AS song_title, mi.info_artist AS artist, mi.info_length AS duration, mi.file_path AS file_path, mi.cover_path AS cover_path
+                FROM playlist_songs ps
+                JOIN music_info mi ON ps.song_id = mi.info_id
+                WHERE ps.playlist_id = ? AND ps.user_id = ?";
+        $stmt = $conn->prepare($sql); // Sagatavo SQL vaicājumu
+        $stmt->bind_param("ii", $playlistId, $user_id); // Piesaista parametrus
+        $stmt->execute(); // Izpilda vaicājumu
+        $result = $stmt->get_result(); // Iegūst rezultātu
+
+        $data = []; // Inicializē datu masīvu
+        while ($row = $result->fetch_assoc()) { // Iterē cauri rezultātu rindām
+            $data[] = $row; // Pievieno rindu datu masīvam
         }
 
-        $stmt->bind_param("ii", $playlistId, $user_id); // Bind playlistId and user_id to the query
-        if (!$stmt->execute()) {
-            error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-            echo json_encode(array("error" => "Database error"));
-            exit;
-        }
-
-        $result = $stmt->get_result();
-        if ($result) {
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            echo json_encode($data);
-        } else {
-            error_log("Get result failed: (" . $stmt->errno . ") " . $stmt->error);
-            echo json_encode(array("error" => "Failed to retrieve data from the database"));
-        }
-        $stmt->close();
+        echo json_encode($data); // Atgriež datus JSON formātā
+        $stmt->close(); // Aizver sagatavoto vaicājumu
     } else {
-        echo json_encode(array("error" => "Missing playlistId parameter"));
+        echo json_encode(array("error" => "Missing playlistId parameter")); // Atgriež kļūdas ziņojumu, ja trūkst playlistId
     }
 } else {
-    echo json_encode(array("error" => "Invalid request method"));
+    echo json_encode(array("error" => "Invalid request method")); // Atgriež kļūdas ziņojumu, ja pieprasījuma metode nav GET
 }
 
+$conn->close(); // Aizver datubāzes savienojumu
 ?>
+

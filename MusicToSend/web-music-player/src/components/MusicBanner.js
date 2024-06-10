@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faStepBackward, faStepForward, faStar as faStarFilled, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faStepBackward, faStepForward, faStar as faStarFilled, faVolumeUp, faShareAlt } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons'; // Import the empty star icon
+import axios from 'axios';
 import "./Banner.css";
+import ShareSong from './ShareSong';
 
 const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, onFavoriteToggle, audioRef, handleSeek }) => {
   const [progress, setProgress] = useState(0);
@@ -10,10 +12,31 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   const [totalDuration, setTotalDuration] = useState("0:00");
   const [volume, setVolume] = useState(50); // Initial volume set to 50%
   const [showVolumeControl, setShowVolumeControl] = useState(false); // State to track visibility of volume control
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (currentSong) {
+        try {
+          const response = await axios.post('http://localhost/backend/checkFavoriteStatus.php', {
+            songId: currentSong.song_id
+          }, {
+            withCredentials: true
+          });
+          setIsFavorite(response.data.isFavorite);
+        } catch (error) {
+          console.error('Error checking favorite status:', error);
+        }
+      }
+    };
+
+    checkFavoriteStatus();
+  }, [currentSong]);
 
   useEffect(() => {
     const audio = audioRef.current;
-  
+
     const updateProgress = () => {
       if (currentSong && audio.duration && isPlaying) {
         const percentage = (audio.currentTime / audio.duration) * 100;
@@ -22,9 +45,9 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         setTotalDuration(formatTime(audio.duration));
       }
     };
-  
+
     const interval = setInterval(updateProgress, 1000); // Update every second
-  
+
     return () => clearInterval(interval); // Cleanup
   }, [isPlaying, currentSong]); // Add currentSong as a dependency
 
@@ -48,6 +71,15 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     setShowVolumeControl(!showVolumeControl);
   };
 
+  const handleFavoriteToggleClick = async () => {
+    try {
+      await onFavoriteToggle(isFavorite);
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
+
   return (
     <div className="music-banner">
       {currentSong && (
@@ -66,8 +98,11 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         <button onClick={onNext}>
           <FontAwesomeIcon icon={faStepForward} />
         </button>
-        <button onClick={() => onFavoriteToggle(parseInt(currentSong.is_favorite) === 1)}>
-          <FontAwesomeIcon icon={currentSong ? parseInt(currentSong.is_favorite) === 1 ? faStarFilled : faStarEmpty : faStarEmpty} className='favorite' />
+        <button onClick={handleFavoriteToggleClick}>
+          <FontAwesomeIcon icon={isFavorite ? faStarFilled : faStarEmpty} className='favorite' />
+        </button>
+        <button onClick={() => setShowShareModal(true)}>
+          <FontAwesomeIcon icon={faShareAlt} />
         </button>
       </div>
       <span>{currentTime}</span>
@@ -95,6 +130,13 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
           />
         )}
       </div>
+      {currentSong && (
+        <ShareSong
+          show={showShareModal}
+          handleClose={() => setShowShareModal(false)}
+          songId={currentSong.song_id}
+        />
+      )}
     </div>
   );
 };

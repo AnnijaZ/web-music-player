@@ -1,0 +1,60 @@
+.notifications-container {
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+  }
+  
+  .notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .notifications-count {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .mark-all-read {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .notifications-list {
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    background: rgba(32, 28, 28, 0.5);
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .notification-item .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .notification-item .notification-content {
+    flex-grow: 1;
+    color: white;
+  }
+  
+  .notification-item .notification-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+  
+  .notification-item .text-muted {
+    color: white !important; /* Add !important to ensure it overrides Bootstrap */
+  }
+  

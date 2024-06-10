@@ -1,14 +1,13 @@
 <?php
-session_start(); // Start the session to access session variables
+session_start();
 
-// Set CORS policies (adjust as necessary for security)
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Accept, Origin, Authorization");
 header('Content-Type: application/json');
 
-include 'connectDB.php'; // Include your database connection file
+include 'connectDB.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["error" => "User not logged in"]);
@@ -18,15 +17,10 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $sql = "SELECT info_id AS song_id, 
-            info_name AS song_title, 
-            info_artist AS artist, 
-            info_length AS duration, 
-            file_path AS file_path, 
-            cover_path AS cover_path,
-            is_favorite
-            FROM music_info
-            WHERE is_favorite = 1 AND id_user = ?";
+    $sql = "SELECT mi.info_id AS song_id, mi.info_name AS song_title, mi.info_artist AS artist, mi.info_length AS duration, mi.file_path AS file_path, mi.cover_path AS cover_path
+            FROM favorites f
+            JOIN music_info mi ON f.song_id = mi.info_id
+            WHERE f.user_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();

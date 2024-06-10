@@ -15,11 +15,9 @@ const Home = ({
 }) => {
 
   useEffect(() => {
-    fetchPlaylists();
     fetchData();
   }, []);
 
-  // Ensure songs is an array and has content before sorting
   const validSongs = Array.isArray(songs) && songs.length > 0;
   const latestUploads = validSongs ? songs.sort((a, b) => b.song_id - a.song_id).slice(0, 5) : [];
 
@@ -34,7 +32,7 @@ const Home = ({
           <h2 style={{ color: 'white', textAlign: 'center', marginTop: '20px' }}>Recently Played</h2>
           {recentSongs.length > 0 ? (
             <ListGroup className="playlist-home">
-              {recentSongs.slice(0, 5).map((song, index) => ( // Only display the last 5 recent songs
+              {recentSongs.slice(0, 5).map((song, index) => ( 
                 <ListGroupItem key={index} className="plistitem-home">
                   <img
                       src={song.cover_path ? `http://localhost/backend/${song.cover_path}` : 'http://localhost/backend/covers/noImage.jpg'}
