@@ -21,3 +21,6 @@ Kvalifikācijas eksāmena projekts
 - [x] Izveidot sadaļu Uploaded Songs
 - [x] Izveidot sadaļu Recents
 - [x] Izveidot sadaļu About
+
+Saite uz testēšanas žurnālu:
+https://docs.google.com/spreadsheets/d/1m5x4Q7fspPpRJEFjngm41C2yQGrKoksn/edit?usp=sharing&ouid=101454506288312807313&rtpof=true&sd=true
