@@ -6,8 +6,8 @@ import '../App.css';
 
 const Home = ({
   handlePlayback, 
-  songs = [], // Ensure songs is always an array
-  recentSongs = [], // Ensure recentSongs is always an array
+  songs = [], // Nodrošina, ka songs vienmēr ir masīvs
+  recentSongs = [], // Nodrošina, ka recentSongs vienmēr ir masīvs
   setShowModal, 
   fetchPlaylists, 
   setCurrentSongId,
@@ -15,14 +15,14 @@ const Home = ({
 }) => {
 
   useEffect(() => {
-    fetchData();
+    fetchData(); // Iegūst datus, kad komponents tiek ielādēts
   }, []);
 
-  const validSongs = Array.isArray(songs) && songs.length > 0;
-  const latestUploads = validSongs ? songs.sort((a, b) => b.song_id - a.song_id).slice(0, 5) : [];
+  const validSongs = Array.isArray(songs) && songs.length > 0; // Pārbauda, vai songs ir derīgs masīvs
+  const latestUploads = validSongs ? songs.sort((a, b) => b.song_id - a.song_id).slice(0, 5) : []; // Atlasīt pēdējos augšupielādes
 
   const playSong = (song) => {
-    handlePlayback(song);
+    handlePlayback(song); // Atskaņo izvēlēto dziesmu
   };
 
   return (
@@ -57,7 +57,7 @@ const Home = ({
               ))}
             </ListGroup>
           ) : (
-            <p style={{ color: 'white', textAlign: 'center' }}>No recent songs played</p>
+            <p style={{ color: 'white', textAlign: 'center' }}>No recent songs played</p> // Paziņojums, ja nav nesen atskaņotu dziesmu
           )}
         </Col>
         <Col xs={12} md={5}>
@@ -89,7 +89,7 @@ const Home = ({
               ))}
             </ListGroup>
           ) : (
-            <p style={{ color: 'white', textAlign: 'center' }}>No latest uploads</p>
+            <p style={{ color: 'white', textAlign: 'center' }}>No latest uploads</p> // Paziņojums, ja nav nesen augšupielādētu dziesmu
           )}
         </Col>
       </Row>

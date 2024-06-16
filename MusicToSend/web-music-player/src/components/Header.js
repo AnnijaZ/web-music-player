@@ -4,25 +4,25 @@ import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faBell, faCog } from '@fortawesome/free-solid-svg-icons';
-import SearchBar from './SearchBar'; // Import the SearchBar component  
+import SearchBar from './SearchBar'; // Importē meklēšanas joslas komponenti
 import Account from './Account';
 import '../App.css';
 
 const Header = ({ handleLogout, handleSearch }) => {
-  const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
-  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showSettingsDropdown, setShowSettingsDropdown] = useState(false); // Stāvoklis, lai kontrolētu iestatījumu izkrītošo sarakstu
+  const [showAccountModal, setShowAccountModal] = useState(false); // Stāvoklis, lai kontrolētu konta modālo logu
 
   const toggleDropdown = () => {
-    setShowSettingsDropdown(!showSettingsDropdown);
+    setShowSettingsDropdown(!showSettingsDropdown); // Pārslēdz iestatījumu izkrītošo sarakstu
   };
 
   const logout = () => {  
-    handleLogout();
+    handleLogout(); // Izsauc izrakstīšanās funkciju
   };
 
   const handleAccountClick = () => {
-    setShowAccountModal(true);
-    setShowSettingsDropdown(false); // Optionally close settings dropdown on modal open
+    setShowAccountModal(true); // Parāda konta modālo logu
+    setShowSettingsDropdown(false); // Aizver iestatījumu izkrītošo sarakstu, ja atvērts
   };
 
   return (
@@ -45,25 +45,25 @@ const Header = ({ handleLogout, handleSearch }) => {
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             <Nav.Link onClick={logout}>Logout</Nav.Link>
           </Nav>
-          <SearchBar handleSearch={handleSearch} />
+          <SearchBar handleSearch={handleSearch} /> {/* Pievieno meklēšanas joslu */}
           <Nav className="ms-auto">
             <Nav.Link href="/notifications">
               <FontAwesomeIcon icon={faBell} className="notification-icon" />
             </Nav.Link>
             <Dropdown show={showSettingsDropdown} onToggle={toggleDropdown}>
-            <Dropdown.Toggle id="dropdown-basic" style={{ border: "none", background: "none", padding: 0 }}>
-              <FontAwesomeIcon icon={faCog} className="settings-icon" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu style={{ boxShadow: "none" }} className="settings-dropdown">
-              <Dropdown.Item onClick={handleAccountClick}>Account</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Example 1</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Example 2</Dropdown.Item>
-            </Dropdown.Menu>
+              <Dropdown.Toggle id="dropdown-basic" style={{ border: "none", background: "none", padding: 0 }}>
+                <FontAwesomeIcon icon={faCog} className="settings-icon" />
+              </Dropdown.Toggle>
+              <Dropdown.Menu style={{ boxShadow: "none" }} className="settings-dropdown">
+                <Dropdown.Item onClick={handleAccountClick}>Account</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Example 1</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Example 2</Dropdown.Item>
+              </Dropdown.Menu>
             </Dropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>
-      <Account show={showAccountModal} handleClose={() => setShowAccountModal(false)} handleLogout={handleLogout}/>
+      <Account show={showAccountModal} handleClose={() => setShowAccountModal(false)} handleLogout={handleLogout}/> {/* Pievieno konta modālo logu */}
     </Navbar>
   );
 };

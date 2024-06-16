@@ -257,55 +257,6 @@ html, body {
   background-color: #495057; /* Slightly lighter background on hover */
 }
 
-
-/* :root {
-  --primary-color: #f0b2ca;
-  --secondary-color: #333;
-  --border-radius: 10px;
-}
-
-body {
-  background-color: ba;
-  color: var(--secondary-color);
-}
-
-.container-fluid {
-  border-radius: var(--border-radius);
-  background-color: white;
-  padding: 2rem;
-  margin: 2rem;
-}
-
-.player,
-
-
-
-/* Add this to style the MusicLibrary component */
-/* .music-library {
-  margin: 2rem 0;
-}
-
-.file-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.file-name {
-  font-weight: bold;
-}
-
-.file-metadata {
-  font-size: 0.9rem;
-  color: #6c757d;
-}
-
-.file-actions {
-  display: flex;
-  justify-content: flex-end;
-} */
-
 .settings-icon {
   color: white; /* Use the color of the parent element */
   line-height: inherit; /* Use the line height of the parent element */

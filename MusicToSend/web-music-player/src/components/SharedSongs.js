@@ -31,30 +31,32 @@ const SharedSongs = ({ setShowModal, handlePlayback, setCurrentSongId, playlists
           <ListGroup className="playlist">
             {sharedSongs.length > 0 ? (
               sharedSongs.map((song, index) => (
-                <ListGroupItem key={index} className="plistitem">
-                  <img
-                    src={song.cover_path ? `http://localhost/backend/${song.cover_path}` : 'http://localhost/backend/covers/noImage.jpg'}
-                    alt={`${song.song_title} cover`}
-                    className="playlist-image"
-                  />
-                  <div className="song-info">
-                    <div>{song.song_title}</div>
-                    <div>{song.artist}</div>
+                <ListGroupItem key={index} className="plistitem d-flex justify-content-center">
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={song.cover_path ? `http://localhost/backend/${song.cover_path}` : 'http://localhost/backend/covers/noImage.jpg'}
+                      alt={`${song.song_title} cover`}
+                      className="playlist-image"
+                    />
+                    <div className="song-info">
+                      <div>{song.song_title}</div>
+                      <div>{song.artist}</div>
+                    </div>
+                    <Button className="play-button" onClick={() => handlePlayback(song)}>
+                      <FontAwesomeIcon icon={faPlay} />
+                    </Button>
+                    <Button className="add-button" onClick={() => {
+                      setCurrentSongId(song.song_id);
+                      setShowModal(true);
+                    }}>
+                      <FontAwesomeIcon icon={faPlus} />
+                    </Button>
                   </div>
-                  <Button className="play-button" onClick={() => handlePlayback(song)}>
-                    <FontAwesomeIcon icon={faPlay} />
-                  </Button>
-                  <Button className="add-button" onClick={() => {
-                    setCurrentSongId(song.song_id);
-                    setShowModal(true);
-                  }}>
-                    <FontAwesomeIcon icon={faPlus} />
-                  </Button>
                 </ListGroupItem>
               ))
             ) : (
-              <ListGroupItem className="notification-item">
-                <div className="notification-content" style={{color: 'white', textAlign: 'center'}}>
+              <ListGroupItem className="notification-item text-center">
+                <div className="notification-content" style={{color: 'white'}}>
                   No shared songs available
                 </div>
               </ListGroupItem>

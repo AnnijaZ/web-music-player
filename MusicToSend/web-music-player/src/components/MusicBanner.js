@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faStepBackward, faStepForward, faStar as faStarFilled, faVolumeUp, faShareAlt } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons'; // Import the empty star icon
+import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons'; // Importē tukšo zvaigznes ikonu
 import axios from 'axios';
 import "./Banner.css";
 import ShareSong from './ShareSong';
 
 const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, onFavoriteToggle, audioRef, handleSeek }) => {
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState("0:00");
-  const [totalDuration, setTotalDuration] = useState("0:00");
-  const [volume, setVolume] = useState(50); // Initial volume set to 50%
-  const [showVolumeControl, setShowVolumeControl] = useState(false); // State to track visibility of volume control
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [progress, setProgress] = useState(0); // Sākotnējā progresija 0%
+  const [currentTime, setCurrentTime] = useState("0:00"); // Sākotnējais pašreizējais laiks 0:00
+  const [totalDuration, setTotalDuration] = useState("0:00"); // Sākotnējais kopējais ilgums 0:00
+  const [volume, setVolume] = useState(50); // Sākotnējais skaļums iestatīts uz 50%
+  const [showVolumeControl, setShowVolumeControl] = useState(false); // Stāvoklis, lai izsekotu skaļuma kontroles redzamību
+  const [showShareModal, setShowShareModal] = useState(false); // Stāvoklis, lai izsekotu dalīšanās modalā redzamību
+  const [isFavorite, setIsFavorite] = useState(false); // Stāvoklis, lai izsekotu vai dziesma ir favorīts
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
@@ -24,14 +24,14 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
           }, {
             withCredentials: true
           });
-          setIsFavorite(response.data.isFavorite);
+          setIsFavorite(response.data.isFavorite); // Iestatīt favorīta statusu no atbildes
         } catch (error) {
           console.error('Error checking favorite status:', error);
         }
       }
     };
 
-    checkFavoriteStatus();
+    checkFavoriteStatus(); // Pārbaudīt favorīta statusu
   }, [currentSong]);
 
   useEffect(() => {
@@ -40,18 +40,18 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     const updateProgress = () => {
       if (currentSong && audio.duration && isPlaying) {
         const percentage = (audio.currentTime / audio.duration) * 100;
-        setProgress(percentage);
-        setCurrentTime(formatTime(audio.currentTime));
-        setTotalDuration(formatTime(audio.duration));
+        setProgress(percentage); // Atjaunināt progresu
+        setCurrentTime(formatTime(audio.currentTime)); // Atjaunināt pašreizējo laiku
+        setTotalDuration(formatTime(audio.duration)); // Atjaunināt kopējo ilgumu
       }
     };
 
-    const interval = setInterval(updateProgress, 1000); // Update every second
+    const interval = setInterval(updateProgress, 1000); // Atjaunināt katru sekundi
 
-    return () => clearInterval(interval); // Cleanup
-  }, [isPlaying, currentSong]); // Add currentSong as a dependency
+    return () => clearInterval(interval); // Tīrīšana
+  }, [isPlaying, currentSong, audioRef]); // Pievieno audioRef kā atkarību
 
-  // Format time function to convert seconds to mm:ss format
+  // Laika formāta funkcija, lai konvertētu sekundes uz mm:ss formātu
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
@@ -59,14 +59,14 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     return `${minutes}:${formattedSeconds}`;
   };
 
-  // Function to handle volume change
+  // Funkcija, lai apstrādātu skaļuma maiņu
   const handleVolumeChange = (event) => {
     const newVolume = event.target.value;
     audioRef.current.volume = newVolume / 100;
     setVolume(newVolume);
   };
 
-  // Function to toggle visibility of volume control
+  // Funkcija, lai pārslēgtu skaļuma kontroles redzamību
   const toggleVolumeControl = () => {
     setShowVolumeControl(!showVolumeControl);
   };
@@ -74,7 +74,7 @@ const MusicBanner = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   const handleFavoriteToggleClick = async () => {
     try {
       await onFavoriteToggle(isFavorite);
-      setIsFavorite(!isFavorite);
+      setIsFavorite(!isFavorite); // Pārslēgt favorīta statusu
     } catch (error) {
       console.error('Error toggling favorite:', error);
     }
