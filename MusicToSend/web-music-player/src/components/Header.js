@@ -4,7 +4,7 @@ import { Container, Navbar, Nav, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faBell, faCog } from '@fortawesome/free-solid-svg-icons';
-import SearchBar from './SearchBar'; // Importē meklēšanas joslas komponenti
+import SearchBar from './SearchBar'; 
 import Account from './Account';
 import '../App.css';
 

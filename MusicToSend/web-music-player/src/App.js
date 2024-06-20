@@ -1,49 +1,49 @@
-import React, { useState, useRef, useEffect } from 'react'; // Importē nepieciešamās bibliotēkas
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Importē maršrutēšanas komponentus
-import { Button, Modal } from "react-bootstrap"; // Importē pogu un modālo logu no Bootstrap
-import Header from './components/Header'; // Importē Header komponentu
-import MusicBanner from './components/MusicBanner'; // Importē MusicBanner komponentu
-import Playlist from './components/Playlist'; // Importē Playlist komponentu
-import Home from './components/Home'; // Importē Home komponentu
-import MusicUploader from './components/Upload'; // Importē MusicUploader komponentu
-import LoginForm from './components/Login/Login'; // Importē LoginForm komponentu
-import './App.css'; // Importē stilu lapu
-import Recents from './components/Recents'; // Importē Recents komponentu
-import About from './components/About/About'; // Importē About komponentu
-import axios from 'axios'; // Importē axios bibliotēku
-import Notification from './components/Notification'; // Importē Notification komponentu
-import Favourites from './components/Favourites'; // Importē Favourites komponentu
-import UploadedSongs from './components/UploadedSongs/UploadedSongs'; // Importē UploadedSongs komponentu
-import UserNotifications from './components/UserNotifications/UserNotifications'; // Importē UserNotifications komponentu
-import SharedSongs from './components/SharedSongs'; // Importē SharedSongs komponentu
+import React, { useState, useRef, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Button, Modal } from "react-bootstrap";
+import Header from './components/Header';
+import MusicBanner from './components/MusicBanner';
+import Playlist from './components/Playlist';
+import Home from './components/Home';
+import MusicUploader from './components/Upload';
+import LoginForm from './components/Login/Login';
+import './App.css';
+import Recents from './components/Recents';
+import About from './components/About/About';
+import axios from 'axios';
+import Notification from './components/Notification';
+import Favourites from './components/Favourites';
+import UploadedSongs from './components/UploadedSongs/UploadedSongs';
+import UserNotifications from './components/UserNotifications/UserNotifications';
+import SharedSongs from './components/SharedSongs/SharedSongs';
 
-axios.defaults.withCredentials = true; // Iestata axios noklusējuma parametrus, lai iekļautu sīkfailus
+axios.defaults.withCredentials = true;
 
 function App() {
-  const [currentSong, setCurrentSong] = useState(null); // Definē stāvokļa mainīgo pašreizējai dziesmai
-  const [isPlaying, setIsPlaying] = useState(false); // Definē stāvokļa mainīgo, lai norādītu, vai dziesma tiek atskaņota
-  const audioRef = useRef(new Audio()); // Izveido atsauci uz Audio objektu
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Definē stāvokļa mainīgo, lai norādītu, vai lietotājs ir pieteicies
-  const [userId, setUserId] = useState(null); // Definē stāvokļa mainīgo lietotāja ID
-  const [songs, setSongs] = useState([]); // Definē stāvokļa mainīgo dziesmu sarakstam
-  const [filteredSongs, setFilteredSongs] = useState([]); // Definē stāvokļa mainīgo filtrētajām dziesmām
-  const [showModal, setShowModal] = useState(false); // Definē stāvokļa mainīgo modālajam logam
-  const [playlists, setPlaylists] = useState([]); // Definē stāvokļa mainīgo atskaņošanas sarakstiem
-  const [notification, setNotification] = useState(null); // Definē stāvokļa mainīgo paziņojumam
-  const [currentSongId, setCurrentSongId] = useState(null); // Definē stāvokļa mainīgo pašreizējās dziesmas ID
-  const [playlistSongs, setPlaylistSongs] = useState([]); // Definē stāvokļa mainīgo atskaņošanas saraksta dziesmām
-  const [filteredPlaylistSongs, setFilteredPlaylistSongs] = useState([]); // Definē stāvokļa mainīgo filtrētajām atskaņošanas saraksta dziesmām
-  const [favoriteSongs, setFavoriteSongs] = useState([]); // Definē stāvokļa mainīgo iecienītajām dziesmām
-  const [filteredFavoriteSongs, setFilteredFavoriteSongs] = useState([]); // Definē stāvokļa mainīgo filtrētajām iecienītajām dziesmām
-  const [recentSongs, setRecentSongs] = useState([]); // Definē stāvokļa mainīgo nesen atskaņotajām dziesmām
-  const [filteredRecentSongs, setFilteredRecentSongs] = useState([]); // Definē stāvokļa mainīgo filtrētajām nesen atskaņotajām dziesmām
-  const [currentPlaylist, setCurrentPlaylist] = useState(null); // Definē stāvokļa mainīgo pašreizējam atskaņošanas sarakstam
-  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(null); // Definē stāvokļa mainīgo pašreizējam atskaņošanas saraksta indeksam
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(new Audio());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [songs, setSongs] = useState([]);
+  const [filteredSongs, setFilteredSongs] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [playlists, setPlaylists] = useState([]);
+  const [notification, setNotification] = useState(null);
+  const [currentSongId, setCurrentSongId] = useState(null);
+  const [playlistSongs, setPlaylistSongs] = useState([]);
+  const [filteredPlaylistSongs, setFilteredPlaylistSongs] = useState([]);
+  const [favoriteSongs, setFavoriteSongs] = useState([]);
+  const [filteredFavoriteSongs, setFilteredFavoriteSongs] = useState([]);
+  const [recentSongs, setRecentSongs] = useState([]);
+  const [filteredRecentSongs, setFilteredRecentSongs] = useState([]);
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(null);
 
   const displayNotification = (message) => {
-    setNotification(message); // Iestata paziņojumu
+    setNotification(message);
     setTimeout(() => {
-      setNotification(null); // Pēc 5 sekundēm noņem paziņojumu
+      setNotification(null);
     }, 5000);
   };
 
@@ -53,9 +53,9 @@ function App() {
         credentials: 'include'
       });
       const data = await response.json();
-      setIsLoggedIn(data.isLoggedIn); // Iestata, vai lietotājs ir pieteicies
+      setIsLoggedIn(data.isLoggedIn);
       if (data.isLoggedIn) {
-        setUserId(data.userId); // Iestata lietotāja ID
+        setUserId(data.userId);
       }
     } catch (error) {
       console.error('Error fetching session data:', error);
@@ -63,7 +63,7 @@ function App() {
   };
 
   useEffect(() => {
-    checkSession(); // Pārbauda sesiju, kad komponents ir ielādēts
+    checkSession();
   }, []);
 
   const fetchData = async () => {
@@ -72,23 +72,23 @@ function App() {
         credentials: 'include'
       });
       const data = await response.json();
-      setSongs(data); // Iestata dziesmu sarakstu
-      setFilteredSongs(data); // Iestata filtrēto dziesmu sarakstu
+      setSongs(data);
+      setFilteredSongs(data);
     } catch (error) {
       displayNotification('Error fetching data:', error);
     }
   };
 
   useEffect(() => {
-    fetchData(); // Ielādē datus, kad komponents ir ielādēts
+    fetchData();
   }, []);
 
   const handleSearch = (searchTerm) => {
     if (searchTerm.trim() === "") {
-      setFilteredSongs(songs); // Ja meklēšanas termins ir tukšs, iestata filtrētās dziesmas uz visām dziesmām
-      setFilteredPlaylistSongs(playlistSongs); // Iestata filtrētās atskaņošanas saraksta dziesmas
-      setFilteredFavoriteSongs(favoriteSongs); // Iestata filtrētās iecienītās dziesmas
-      setFilteredRecentSongs(recentSongs); // Iestata filtrētās nesen atskaņotās dziesmas
+      setFilteredSongs(songs);
+      setFilteredPlaylistSongs(playlistSongs);
+      setFilteredFavoriteSongs(favoriteSongs);
+      setFilteredRecentSongs(recentSongs);
     } else {
       setFilteredSongs(songs.filter(song =>
         song.song_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,11 +110,11 @@ function App() {
   };
 
   const handleLogin = async (loginSuccess) => {
-    setIsLoggedIn(loginSuccess); // Iestata, vai lietotājs ir pieteicies
-    fetchData(); // Ielādē datus
+    setIsLoggedIn(loginSuccess);
+    fetchData();
     if (loginSuccess) {
-      await checkSession(); // Pārbauda sesiju
-      fetchRecentSongs(); // Ielādē nesen atskaņotās dziesmas
+      await checkSession();
+      fetchRecentSongs();
     }
   };
 
@@ -123,7 +123,7 @@ function App() {
       credentials: 'include'
     })
       .then(response => response.json())
-      .then(data => setPlaylists(data)) // Iestata atskaņošanas sarakstu datus
+      .then(data => setPlaylists(data))
       .catch(error => displayNotification('Error fetching playlists:', error));
   };
 
@@ -133,8 +133,8 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        setPlaylistSongs(data); // Iestata atskaņošanas saraksta dziesmas
-        setFilteredPlaylistSongs(data); // Iestata filtrētās atskaņošanas saraksta dziesmas
+        setPlaylistSongs(data);
+        setFilteredPlaylistSongs(data);
       })
       .catch(error => displayNotification('Error fetching playlist songs:', error));
   };
@@ -145,8 +145,8 @@ function App() {
         credentials: 'include'
       });
       const data = await response.json();
-      setFavoriteSongs(data); // Iestata iecienītās dziesmas
-      setFilteredFavoriteSongs(data); // Iestata filtrētās iecienītās dziesmas
+      setFavoriteSongs(data);
+      setFilteredFavoriteSongs(data);
     } catch (error) {
       displayNotification('Error fetching favorite songs:', error);
     }
@@ -158,8 +158,8 @@ function App() {
         credentials: 'include'
       });
       const data = await response.json();
-      setRecentSongs(data); // Iestata nesen atskaņotās dziesmas
-      setFilteredRecentSongs(data); // Iestata filtrētās nesen atskaņotās dziesmas
+      setRecentSongs(data);
+      setFilteredRecentSongs(data);
     } catch (error) {
       console.error('Error fetching recent songs:', error);
     }
@@ -167,7 +167,7 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchRecentSongs(); // Ielādē nesen atskaņotās dziesmas, ja lietotājs ir pieteicies
+      fetchRecentSongs();
     }
   }, [isLoggedIn]);
 
@@ -183,7 +183,12 @@ function App() {
       const data = await response.json();
       if (data.success) {
         displayNotification("Logout successful");
-        setIsLoggedIn(false); // Iestata, ka lietotājs nav pieteicies
+        setIsLoggedIn(false);
+        setUserId(null);
+        setCurrentSong(null);
+        setIsPlaying(false);
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       } else {
         displayNotification('Logout failed', data.message);
       }
@@ -193,7 +198,7 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    return <LoginForm onLogin={handleLogin} />; // Ja lietotājs nav pieteicies, parāda pieteikšanās formu
+    return <LoginForm onLogin={handleLogin} />;
   }
 
   const addToRecentSongs = async (song) => {
@@ -232,45 +237,45 @@ function App() {
     const audio = audioRef.current;
     audio.src = `http://localhost/backend/${song.file_path}`;
     audio.play();
-    setCurrentSong(song); // Iestata pašreizējo dziesmu
-    setIsPlaying(true); // Iestata, ka dziesma tiek atskaņota
-    setCurrentPlaylist(playlist); // Iestata pašreizējo atskaņošanas sarakstu
-    setCurrentPlaylistIndex(index); // Iestata pašreizējo atskaņošanas saraksta indeksu
-    addToRecentSongs(song); // Pievieno dziesmu nesen atskaņoto dziesmu sarakstam
+    setCurrentSong(song);
+    setIsPlaying(true);
+    setCurrentPlaylist(playlist);
+    setCurrentPlaylistIndex(index);
+    addToRecentSongs(song);
   };
 
   const handlePlayPause = () => {
     const audio = audioRef.current;
     if (isPlaying) {
-      audio.pause(); // Pārtrauc dziesmas atskaņošanu
+      audio.pause();
     } else {
-      audio.play(); // Atskaņo dziesmu
+      audio.play();
       if (currentSong) {
-        addToRecentSongs(currentSong); // Pievieno pašreizējo dziesmu nesen atskaņoto dziesmu sarakstam
+        addToRecentSongs(currentSong);
       }
     }
-    setIsPlaying(prevState => !prevState); // Maina atskaņošanas stāvokli
+    setIsPlaying(prevState => !prevState);
   };
 
   const handleNext = () => {
     if (currentPlaylist && currentPlaylistIndex !== null) {
       const nextIndex = (currentPlaylistIndex + 1) % currentPlaylist.length;
-      handlePlayback(currentPlaylist[nextIndex], currentPlaylist, nextIndex); // Atskaņo nākamo dziesmu atskaņošanas sarakstā
+      handlePlayback(currentPlaylist[nextIndex], currentPlaylist, nextIndex);
     } else if (currentSong) {
       const currentIndex = filteredSongs.findIndex(song => song.song_id === currentSong.song_id);
       const nextIndex = (currentIndex + 1) % filteredSongs.length;
-      handlePlayback(filteredSongs[nextIndex]); // Atskaņo nākamo dziesmu filtrēto dziesmu sarakstā
+      handlePlayback(filteredSongs[nextIndex]);
     }
   };
 
   const handlePrevious = () => {
     if (currentPlaylist && currentPlaylistIndex !== null) {
       const prevIndex = (currentPlaylistIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
-      handlePlayback(currentPlaylist[prevIndex], currentPlaylist, prevIndex); // Atskaņo iepriekšējo dziesmu atskaņošanas sarakstā
+      handlePlayback(currentPlaylist[prevIndex], currentPlaylist, prevIndex);
     } else if (currentSong) {
       const currentIndex = filteredSongs.findIndex(song => song.song_id === currentSong.song_id);
       const prevIndex = (currentIndex - 1 + filteredSongs.length) % filteredSongs.length;
-      handlePlayback(filteredSongs[prevIndex]); // Atskaņo iepriekšējo dziesmu filtrēto dziesmu sarakstā
+      handlePlayback(filteredSongs[prevIndex]);
     }
   };
 
@@ -288,8 +293,8 @@ function App() {
         const data = await response.json();
         displayNotification(data.message);
 
-        fetchData(); // Atjauno datus, lai atspoguļotu izmaiņas iecienītajās dziesmās
-        fetchFavoriteSongs(); // Ielādē iecienītās dziesmas
+        fetchData();
+        fetchFavoriteSongs();
       } catch (error) {
         displayNotification('Error adding/removing song from favorites:', error);
       }
@@ -312,9 +317,9 @@ function App() {
         .then(data => {
           displayNotification(data.message);
           if (data.message === 'Song added to playlist successfully') {
-            fetchData(); // Atjauno datus
+            fetchData();
           }
-          setShowModal(false); // Aizver modālo logu
+          setShowModal(false);
         })
         .catch(error => displayNotification('Error adding song to playlist:', error));
     } else {
@@ -327,7 +332,7 @@ function App() {
     const audio = audioRef.current;
     if (!isNaN(audio.duration) && isFinite(audio.duration)) {
       const newTime = (newPosition / 100) * audio.duration;
-      audio.currentTime = newTime; // Iestata jaunu dziesmas atskaņošanas pozīciju
+      audio.currentTime = newTime;
     }
   };
 

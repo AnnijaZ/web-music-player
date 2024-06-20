@@ -51,26 +51,8 @@ body {
 html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Try adding this to hide overflow on the body and html */
+  overflow: hidden;
 }
-
-
-/* .playlist {
-  border-radius: 1rem;
-  background-color: rgb(35, 15, 54);
-  padding: 1rem;
-  margin: 1rem 0;
-}
-
-.playlist {
-  max-height: 400px;
-  overflow-y: auto;
-} 
-
-.plistitem{
-  background-color: #1d1b1b;
-  color: white;
-} */
 
 .custom-navbar {
   background: linear-gradient(to right, rgb(67, 28, 104), rgb(146, 52, 118));
@@ -83,8 +65,8 @@ html, body {
 }
 
 .music-icon {
-  margin-right: 0.5rem; /* Adjust margin as needed */
-  color: white; /* Set the color for the icon */
+  margin-right: 0.5rem;
+  color: white; 
 }
 
 .notification-icon {
@@ -92,15 +74,15 @@ html, body {
 }
 
 .playlist {
-  max-width: 400px; /* Set the maximum width for the playlist */
-  margin: 50px 0 0 100px; /* Remove the margin for centering */
+  max-width: 400px; 
+  margin: 50px 0 0 100px; 
 }
 
 .plistitem {
   display: flex;
   align-items: center;
-  padding: 10px; /* Add padding for better spacing */
-  margin-bottom: 15px; /* Add margin between items */
+  padding: 10px; 
+  margin-bottom: 15px; 
   border: 1px solid #241036; /* Add a border for each item */
   border-radius: 5px; /* Add border radius for a rounded effect */
   background-color: #1d1b1b;
@@ -117,11 +99,11 @@ html, body {
 }
 
 .playlist-image {
-  width: 70px; /* Adjust the width of the image */
-  height: 70px; /* Adjust the height of the image */
-  object-fit: cover; /* Ensure the image covers the entire space */
-  border-radius: 5px; /* Add border radius for a rounded effect */
-  margin-right: 10px; /* Add margin between the image and text */
+  width: 70px;
+  height: 70px; 
+  object-fit: cover; 
+  border-radius: 5px; 
+  margin-right: 10px; 
 }
 
 .add-playlist-button{

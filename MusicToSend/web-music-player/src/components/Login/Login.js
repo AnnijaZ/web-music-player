@@ -13,7 +13,7 @@ const LoginForm = ({ onLogin }) => {
     const [regUsername, setRegUsername] = useState('');
     const [regPassword, setRegPassword] = useState('');
     const [regPasswordRepeat, setRegPasswordRepeat] = useState('');
-    const [notification, setNotification] = useState(null);  // Add state for notification
+    const [notification, setNotification] = useState(null); 
 
     const displayNotification = (message) => {
       setNotification(message);
@@ -124,8 +124,10 @@ const LoginForm = ({ onLogin }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <Button type="submit" className="btn">Login</Button>
-          <Button variant="secondary" onClick={() => setShowRegister(true)} className="btn">Register</Button>
+          <div className="button-container">
+            <Button type="submit" className="btn">Login</Button>
+            <Button variant="secondary" onClick={() => setShowRegister(true)} className="btn">Register</Button>
+          </div>
         </form>
 
         <Modal show={showRegister} onHide={() => {

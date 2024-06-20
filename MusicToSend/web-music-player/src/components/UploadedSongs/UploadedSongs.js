@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Pagination } from 'antd'; // Import antd pagination
+import { Pagination } from 'antd'; 
 import '../../App.css';
 
 const UploadedSongs = ({ songs, handlePlayback, setCurrentSongId, fetchPlaylists, setShowModal }) => {

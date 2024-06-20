@@ -1,0 +1,54 @@
+/* SharedSongs.css */
+
+/* Styling for the notification item */
+.notification-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+    background: rgba(0, 0, 0, 0.5); /* Dark see-through background */
+    border: 1px solid #241036; /* Border */
+    border-radius: 5px; /* Border radius for rounded effect */
+    margin-top: 20px; /* Space below the heading */
+  }
+  
+  .notification-content {
+    color: white;
+    text-align: center;
+    font-size: 18px; /* Adjust font size as needed */
+  }
+  
+  /* Styling for the playlist item */
+  .plistitem {
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Add padding for better spacing */
+    margin-bottom: 15px; /* Add margin between items */
+    border: 1px solid #241036; /* Add a border for each item */
+    border-radius: 5px; /* Add border radius for a rounded effect */
+    background-color: #1d1b1b;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .plistitem:hover {
+    transform: translateY(-5px);
+  }
+  
+  .playlist-image {
+    width: 70px; /* Adjust the width of the image */
+    height: 70px; /* Adjust the height of the image */
+    object-fit: cover; /* Ensure the image covers the entire space */
+    border-radius: 5px; /* Add border radius for a rounded effect */
+    margin-right: 10px; /* Add margin between the image and text */
+  }
+  
+  .add-button, .play-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: auto; /* Move the button to the right */
+  }
+  

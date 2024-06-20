@@ -3,10 +3,14 @@ import { Container, Row, Col, ListGroup, ListGroupItem, Button } from 'react-boo
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
-import '../App.css';
+import '../../App.css';
+import './SharedSongs.css';
+import { Pagination } from 'antd'; 
 
 const SharedSongs = ({ setShowModal, handlePlayback, setCurrentSongId, playlists, addToPlaylist }) => {
   const [sharedSongs, setSharedSongs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const songsPerPage = 5;
 
   useEffect(() => {
     const fetchSharedSongs = async () => {
@@ -23,16 +27,24 @@ const SharedSongs = ({ setShowModal, handlePlayback, setCurrentSongId, playlists
     fetchSharedSongs();
   }, []);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const indexOfLastSong = currentPage * songsPerPage;
+  const indexOfFirstSong = indexOfLastSong - songsPerPage;
+  const currentSongs = sharedSongs.slice(indexOfFirstSong, indexOfLastSong);
+
   return (
     <Container>
       <Row className="justify-content-center">
         <Col xs={12} md={10}>
           <h2 style={{ color: 'white', textAlign: 'center' }}>Shared Songs</h2>
-          <ListGroup className="playlist">
-            {sharedSongs.length > 0 ? (
-              sharedSongs.map((song, index) => (
-                <ListGroupItem key={index} className="plistitem d-flex justify-content-center">
-                  <div className="d-flex align-items-center">
+          {sharedSongs.length > 0 ? (
+            <>
+              <ListGroup className="playlist">
+                {currentSongs.map((song, index) => (
+                  <ListGroupItem key={index} className="plistitem">
                     <img
                       src={song.cover_path ? `http://localhost/backend/${song.cover_path}` : 'http://localhost/backend/covers/noImage.jpg'}
                       alt={`${song.song_title} cover`}
@@ -51,17 +63,25 @@ const SharedSongs = ({ setShowModal, handlePlayback, setCurrentSongId, playlists
                     }}>
                       <FontAwesomeIcon icon={faPlus} />
                     </Button>
-                  </div>
-                </ListGroupItem>
-              ))
-            ) : (
-              <ListGroupItem className="notification-item text-center">
-                <div className="notification-content" style={{color: 'white'}}>
-                  No shared songs available
-                </div>
-              </ListGroupItem>
-            )}
-          </ListGroup>
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+              <Pagination
+                current={currentPage}
+                pageSize={songsPerPage}
+                total={sharedSongs.length}
+                onChange={handlePageChange}
+                style={{ textAlign: 'center', marginTop: '20px' }}
+                className="custom-pagination"
+              />
+            </>
+          ) : (
+            <div className="notification-item">
+              <div className="notification-content">
+                No shared songs available
+              </div>
+            </div>
+          )}
         </Col>
       </Row>
     </Container>
